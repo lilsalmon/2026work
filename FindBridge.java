@@ -84,13 +84,18 @@ class BridgeFinder{
 
     void dfs(int u, int parent){//깊이 우선 탐색 알고리즘
         visited[u] = true;
-        disc[u] = low[u] = time++;
+        low[u] = time++;
+        disc[u] = low[u];
         LinkedList<Integer> adj = graph.getAdj(u);
         for(int v : adj){
             if(v == parent) continue;
             if(!visited[v]){
                 dfs(v, u);
                 low[u] = Math.min(low[u], low[v]);
+
+                if(disc[u]<low[v]){
+                    bridges.add(new Edge(u, v));
+                }
             } else {
                 low[u] = Math.min(low[u], disc[v]);
             }
